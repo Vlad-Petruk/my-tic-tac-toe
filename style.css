@@ -31,15 +31,16 @@
     height: 60px;
     width: 60px;
 
-    font-size: 35px;
+    font-size: 50px;
 
-    text-align: center;
+   text-align: center;
+
 }
 
 #box0, #box1, #box2, #box3, #box4, #box5 {
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid black;
 }
 
 #box0, #box1, #box3, #box4, #box6, #box7 {
-    border-right: 1px solid black;
+    border-right: 2px solid black;
 }
