@@ -23,6 +23,7 @@ function createPlayer(name, marker) {
 const DisplayController = (()=> {
     const mainBox = document.querySelector('.main-container')
     const boardBox = document.querySelector('.board-container');
+    const winnerBox = document.createElement('div');
 
     const newGameBtn = document.createElement('button');
     newGameBtn.classList.add('new-game-btn');
@@ -30,8 +31,8 @@ const DisplayController = (()=> {
     newGameBtn.addEventListener('click', ()=>{
         Game.endGame();
     })
-    mainBox.append(newGameBtn)
-
+    mainBox.append(newGameBtn);
+    mainBox.append(winnerBox)
 
     function renderBoard() {
         boardBox.textContent = ''
@@ -51,13 +52,20 @@ const DisplayController = (()=> {
         }
     }
 
+    function announceWinner(winner) {
+        if (winner === 'Tie') {
+            winnerBox.textContent = 'Tie!';
+        } else winnerBox.textContent = `${winner} won!`;
+    }
+
     function clearBoard() {
         board = new Array(9).fill('');
         renderBoard();
         Gameboard.gameboard = new Array(9).fill('');
+        winnerBox.textContent = '';
     }
 
-    return { renderBoard, clearBoard }
+    return { renderBoard, clearBoard, announceWinner }
 })();
 
 
@@ -75,10 +83,13 @@ const Game = (() => {
         if (index < 0 || index > 8) {
             console.log ('Invalid index')
         } else {
-            if (board[index] === ''&& checkWin() !== 'Win') {
+            if (board[index] === '') {
                 board[index] = currentPlayer.marker;
                 DisplayController.renderBoard()
-                currentPlayer = switchPlayer(); 
+                const result = checkWin(); 
+                if (result !== 'Win') {
+                    currentPlayer = switchPlayer(); 
+                } 
             } else {
                 DisplayController.renderBoard()
                 console.log('Invalid spot')
@@ -92,23 +103,23 @@ const Game = (() => {
 
     function checkWin () {
         if(checkTie()) {
-            return console.log('Tie')
+            return DisplayController.announceWinner('Tie')
         } else {
             for (const combination of Gameboard.winningCombinations) {
                 const [a, b, c] = combination;
                 if (board[a] !== '' && board[a] === board[b] && board[a] === board[c]) {
                     console.log(`${currentPlayer.name} wins!`);
-                    currentPlayer = playerX
+                    DisplayController.announceWinner(currentPlayer.name)
                     return 'Win';
                 }
-            }
-    
-            
+            }  
+            return null 
         }
     }
 
     function endGame() {
         DisplayController.clearBoard();
+        currentPlayer = playerX;
     }
 
     return { 
@@ -116,14 +127,6 @@ const Game = (() => {
         endGame
     }
 })();
-
-
-// Game.markSpot(3);
-// Game.markSpot(7);
-// Game.markSpot(1);
-// Game.markSpot(8);
-// Game.markSpot(0);
-// Game.markSpot(6);
 
 DisplayController.renderBoard()
 
