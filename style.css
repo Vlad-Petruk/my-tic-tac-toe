@@ -1,0 +1,45 @@
+:root {
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    margin: inherit;
+    padding: inherit;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100vh;
+}
+
+.board-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    width: 190px;
+    height: 181px;
+
+}
+
+.board-box {
+    height: 60px;
+    width: 60px;
+
+    font-size: 35px;
+
+    text-align: center;
+}
+
+#box0, #box1, #box2, #box3, #box4, #box5 {
+    border-bottom: 1px solid black;
+}
+
+#box0, #box1, #box3, #box4, #box6, #box7 {
+    border-right: 1px solid black;
+}
