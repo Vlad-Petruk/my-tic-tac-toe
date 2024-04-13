@@ -24,6 +24,7 @@ const DisplayController = (()=> {
     const mainBox = document.querySelector('.main-container')
     const boardBox = document.querySelector('.board-container');
     const winnerBox = document.createElement('div');
+    
 
     const newGameBtn = document.createElement('button');
     newGameBtn.classList.add('new-game-btn');
@@ -55,7 +56,13 @@ const DisplayController = (()=> {
     function announceWinner(winner) {
         if (winner === 'Tie') {
             winnerBox.textContent = 'Tie!';
-        } else winnerBox.textContent = `${winner} won!`;
+            winnerBox.classList.add('winner-box')
+            // setTimeout(function(){Game.endGame()}, 4000);
+        } else {
+            winnerBox.textContent = `${winner} won!`;
+            winnerBox.classList.add('winner-box')
+            // setTimeout(function(){Game.endGame()}, 4000);
+        };
     }
 
     function clearBoard() {
@@ -63,6 +70,7 @@ const DisplayController = (()=> {
         renderBoard();
         Gameboard.gameboard = new Array(9).fill('');
         winnerBox.textContent = '';
+        winnerBox.classList.remove('winner-box')
     }
 
     return { renderBoard, clearBoard, announceWinner }
@@ -70,8 +78,8 @@ const DisplayController = (()=> {
 
 
 const Game = (() => {
-    const playerX = createPlayer('playerX', 'X');
-    const playerO = createPlayer('playerO', 'O');
+    const playerX = createPlayer('Stepan', 'X');
+    const playerO = createPlayer('Valera', 'O');
    
     let currentPlayer = playerX;
 
@@ -82,7 +90,9 @@ const Game = (() => {
     function markSpot(index) {
         if (index < 0 || index > 8) {
             console.log ('Invalid index')
-        } else {
+        } else if(checkWin() === 'Win') {
+            DisplayController.renderBoard()
+        }else {
             if (board[index] === '') {
                 board[index] = currentPlayer.marker;
                 DisplayController.renderBoard()
